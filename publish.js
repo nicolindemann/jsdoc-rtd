@@ -424,7 +424,6 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, uniqueId) {
         items = items.sort(sortByMultipleKey(['type', 'title', 'name', 'longname']))
 
         items.forEach(function(item) {
-            console.log(item)
             // console.log(item.name, item.type)
             // Skip building an item with the same id more than once. Used
             // When rendering navigatiohn for modules.
