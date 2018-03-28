@@ -45,60 +45,66 @@ if (package) {
     <?js } ?>
 </head>
 <body>
-<div class="main-container">
-    <input type="checkbox" id="nav-trigger" class="nav-trigger">
-    <label for="nav-trigger" class="navicon-button x">
-      <div class="navicon"></div>
-    </label>
-    <label for="nav-trigger" class="overlay"></label>
-    <nav class="lnb" id="lnb">
-        <div class="nav-search js-search">
-            <div class="logo" style="<?js= style ?>">
-                <img src="<?js= logoUrl?>" width="100%" height="100%">
+
+    <nav class="navigation-sidebar-container">
+        <div class="navigation-sidebar">
+
+            <input type="checkbox" id="nav-trigger" class="nav-trigger">
+            <label for="nav-trigger" class="navicon-button x">
+              <div class="navicon"></div>
+            </label>
+            <label for="nav-trigger" class="overlay"></label>
+            
+            <div class="nav-search js-search">
+                <a class="nav-project-title" href="index.html" class="link">
+                    <div class="logo" style="<?js= style ?>">
+                        <img src="<?js= logoUrl?>" width="100%" height="100%">
+                    </div>
+                </a>
+                <div class="nav-title">
+                    <h1><?js= name ?></h1>
+                    <span class="version">
+                    <?js if (version) { ?>
+                        v<?js= version ?>
+                    <?js } ?>
+                    </span>
+                </div>
+                <input type="text" placeholder="Search documentation...">
+                <ul class="searched-list"></ul>
             </div>
-            <input type="text" placeholder="Search docs">
-            <ul class="searched-list"></ul>
-        </div>
 
-        <div class="nav-main">
-            <h1><a href="index.html" class="link"><?js= name ?></a></h1>
-            <span class="version">
-            <?js if (version) { ?>
-                v<?js= version ?>
+            <?js if (examples) { ?>
+            <div class="nav-doc-type">
+                <div class="nav-doc-item" id="manuals-tab">
+                    <a href="./"><?js= tutorialsName ?></a>
+                </div>
+                <div class="nav-doc-item" id="api-tab">
+                    <a href="#api"><?js= apiName ?></a>
+                </div>
+            </div>
             <?js } ?>
-            </span>
-        </div>
 
-        <?js if (examples) { ?>
-        <ol class="nav-tab">
-            <li id="api-tab">
-                <a href="#api"><h4><?js= apiName ?></h4></a>
-            </li>
-            <li id="manuals-tab">
-                <a href="#manuals"><h4><?js= tutorialsName ?></h4></a>
-            </li>
-        </ol>
-        <?js } ?>
-
-        <div class="scroll">
-        <?js= this.nav ?>
+            <div class="nav-scroll-container"><?js= this.nav ?></div>
         </div>
     </nav>
 
-    <div class="content">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Docs</a> »</li>
-            <li><?js= title ?></li>
-        </ul>
-        <hr>
-        <?js= content ?>
-        <hr>
-        <footer>
-            <strong><?js= footerText ?></strong><br/>
-            Documented with <a href="https://github.com/jsdoc3/jsdoc">JSDoc <?js= env.version.number ?></a><?js if(env.conf.templates && env.conf.templates.default && env.conf.templates.default.includeDate !== false) ?>
-        </footer>
+    <div class="content-container">
+        <div class="content">
+            <ul class="breadcrumbs">
+                <li><a href="index.html">Docs</a> »</li>
+                <li><?js= title ?></li>
+            </ul>
+            <hr>
+            <?js= content ?>
+            <hr>
+            <footer>
+                <strong><?js= footerText ?></strong><br/>
+                Documented with <a href="https://github.com/jsdoc3/jsdoc">JSDoc <?js= env.version.number ?></a><?js if(env.conf.templates && env.conf.templates.default && env.conf.templates.default.includeDate !== false) ?>
+            </footer>
+        </div>
+        <div class="flex-filler"></div>
     </div>
-</div>
+
 
 <script src="js/jquery.min.js"></script>
 <script>

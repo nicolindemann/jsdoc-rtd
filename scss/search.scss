@@ -1,89 +1,101 @@
 .nav-search {
-    width: 100%;
-    height: 130px;
-    margin: 0;
-    z-index: 200;
     background-color: $accent-color;
-    text-align: center;
     display: block;
-    color: #fcfcfc;
-    padding: 10px 0;
+    height: 170px;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    z-index: 200;
 
     .logo {
-        width: 90px;
-        vertical-align: initial;
         margin: 0 auto;
-        margin-bottom: 1rem;
+        vertical-align: initial;
+        width: 90px;
+    }
+
+    // The tabs elements to navigate.
+    .nav-title {
+        color: $grey-color-lightest;
+        margin-bottom: $spacer;
+        text-align: center;
+
+        h1 {
+            margin: 0;
+        }
+
+        .version {
+            color: $grey-color-lightest;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
     }
 
     input {
         border: 0;
-        border-radius: 15px;
-        padding: 7px 15px;
-        width: 95%;
+        font-size: 0.9rem;
+        outline: none;
+        padding: ($spacer * 1.5) ($spacer * 2);
+        width: 100%;
     }
 
     a {
         color: #fff;
     }
 
-    strong {
-        color: lighten($accent-color, 20%);
-        font-weight: normal;
-    }
-
     ul {
+        background-color: $grey-color-lightest;
         font-size: 0.9rem;
+        max-width: 600px;
         position: absolute;
         width: 100%;
-        background-color: rgba(100, 100, 100, .9);
         z-index: 10000;
     }
 
     // Result box that shows when using the search input.
     ul.searched-list {
-        margin-top: 15px;
+        background: $grey-color-darkest;
+        border-bottom: 1px solid lighten($grey-color-darkest, 10%);
+        margin-top: 0;
+        overflow: hidden;
 
         li {
-            text-align: left;
-            width: 100%;
-            overflow: hidden;
+            align-items: center;
             border: 0;
-            margin: 0;
             cursor: pointer;
-            padding: 0.5rem;
+            display: flex;
+
+            strong {
+                color: $brand-color;
+                font-weight: normal;
+            }
 
             &:hover,
             &.highlight {
-                background-color: #fff;
+                background-color: $grey-color-lighter;
 
                 a {
                     color: #1f292e;
                 }
 
                 strong {
-                    color: lighten($accent-color, 20%);
+                    color: lighten($brand-color, 20%);
                 }
 
-                .group {
-                    color: #777;
-                }
             }
 
             .group {
-                font-size: 11px;
-                color: #ccc;
-                margin-left: 10px;
+                color: $accent-color;
+                flex: 1;
+                font-size: 0.8rem;
+                padding-right: $spacer * 2;
             }
 
             a {
-                color: #fff;
-                padding: 1rem;
-                padding-left: 1rem;
-            }
-
-            span.group {
-                float: right;
+                color: $grey-color-light;
+                display: block;
+                padding: $spacer ($spacer * 2);
+                text-align: left;
+                width: 100%;
             }
         }
     }

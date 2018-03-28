@@ -1,5 +1,3 @@
-'use strict'
-
 const doop = require('jsdoc/util/doop')
 const env = require('jsdoc/env')
 const fs = require('jsdoc/fs')
@@ -35,13 +33,24 @@ tutorialsName = env.conf.templates.tabNames.tutorials
 env.conf.templates.useCollapsibles = env.conf.templates.useCollapsibles !== false
 
 
+function sortByMultipleKey(keys) {
+    return function(a, b) {
+        if (keys.length === 0) return 0
+        var key = keys[0]
+        if (a[key] < b[key]) return -1
+        else if (a[key] > b[key]) return 1
+        else return sortByMultipleKey(keys.slice(1))(a, b)
+    }
+}
+
+
 function find(spec) {
     return helper.find(data, spec)
 }
 
 
 function tutoriallink(_tutorial) {
-    return helper.toTutorial(_tutorial, null, {tag: 'em', classname: 'disabled', prefix: 'Tutorial: '})
+    return helper.toTutorial(_tutorial, null, {classname: 'disabled', prefix: 'Tutorial: ', tag: 'em'})
 }
 
 
@@ -329,14 +338,15 @@ function attachModuleSymbols(doclets, modules) {
 
 
 function buildSubNavMembers(list, type) {
+    list = list.sort(sortByMultipleKey(['type', 'name', 'longname']))
     let html = ''
 
     if (list.length) {
         html += `<div class="member-type">${type}</div>`
         html += '<ul class="inner">'
         list.forEach(function(item) {
-            html += `<li class="sub-nav-item">${linkto(item.longname, item.name, null, null, true)}`
-            if (item.meta.code.node.async) {
+            html += `<li class="sub-nav-item ${item.name}">${linkto(item.longname, item.name, null, null, true)}`
+            if (item.meta.code.node && item.meta.code.node.async) {
                 html += ' <span class="async"> async</span>'
             }
             html += '</a></li>'
@@ -387,7 +397,10 @@ function buildSubNav(obj) {
 
 
 function makeCollapsibleItemHtmlInNav(item, linkHtml) {
-    return `<li class="nav-item">
+    let classList = ''
+    if (item.type === 2) classList = ` tutorial ${item.name}`
+
+    return `<li class="nav-item${classList}">
                 <span class="toggle-subnav invisible btn btn-link fa fa-plus"></span>
                 ${linkHtml}
                 ${buildSubNav(item)}
@@ -407,8 +420,12 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, uniqueId) {
         let className = itemHeading === tutorialsName ? 'nav-manuals hidden' : 'nav-api hidden'
         let makeHtml = env.conf.templates.useCollapsibles ? makeCollapsibleItemHtmlInNav : makeItemHtmlInNav
         let seen = {}
+
+        items = items.sort(sortByMultipleKey(['type', 'title', 'name', 'longname']))
+
         items.forEach(function(item) {
-            let linkHtml
+            console.log(item)
+            // console.log(item.name, item.type)
             // Skip building an item with the same id more than once. Used
             // When rendering navigatiohn for modules.
             if (uniqueId && seen[item.id]) return
@@ -421,7 +438,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, uniqueId) {
                 } else {
                     displayName = item.name
                 }
-                linkHtml = linktoFn(item.longname, displayName.replace(/\b(module|event):/g, ''))
+                let linkHtml = linktoFn(item.longname, displayName.replace(/\b(module|event):/g, ''))
                 itemsNav += makeHtml(item, linkHtml)
             }
             if (uniqueId) seen[item.id] = true

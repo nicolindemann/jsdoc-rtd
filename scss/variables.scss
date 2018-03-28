@@ -1,0 +1,19 @@
+$navbar-width: 300px;
+$accent-color: #2980b9;
+
+
+$grey-color: #666;
+
+$grey-color-darkest: darken($grey-color, 20%);
+$grey-color-darker: darken($grey-color, 15%);
+$grey-color-dark: darken($grey-color, 5%);
+$grey-color-light: lighten($grey-color, 25%);
+$grey-color-lighter: lighten($grey-color, 55%);
+$grey-color-lightest: lighten($grey-color, 65%);
+
+$white-color: #fff;
+
+$spacer: 8px;
+$brand-color: #de6b35;
+$primary-color: #4d4e53;
+$page-color: #fcfcfc;

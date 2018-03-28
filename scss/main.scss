@@ -1,29 +1,27 @@
-$navbar-width: 300px;
-$accent-color: #2980b9;
-$grey-color-dark-1: #343131;
-$grey-color-dark-2: #4e4a4a;
-$grey-color-light-1: #d6d6d6;
-$grey-color-light-2: #eee;
-
-$page-color: #fcfcfc;
-
+@import "variables";
 @import "fonts";
 @import "navigation";
 @import "prettify";
 
-body {
-    padding: 0;
+html, body {
     margin: 0;
-    font-family: "Lato";
-    font-size: 16px;
-    line-height: 1.5;
-    color: #4d4e53;
+    padding: 0;
+}
+
+body {
     background-color: #fff;
+    color: $primary-color;
+    display: grid;
+    font-family: "Roboto";
+    grid-template-columns: 300px auto;
+
+    height: 100vh;
 }
 
 * {
     box-sizing: border-box;
 }
+
 
 a,
 a:visited,
@@ -32,35 +30,26 @@ a:active {
     text-decoration: none;
 }
 
-ul, ol, li {
-    list-style: none;
-    padding-left: 0;
-    margin-left: 0;
-}
-
-h1, h2, h3, h4 {
-    font-family: "Roboto Slab";
-    margin: 0;
-    font-weight: bold;
-}
 
 h1 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     letter-spacing: -2px;
+    text-transform: uppercase;
 }
 
 h2 {
-    font-size: 1rem;
+    color: $brand-color;
+    font-size: 1.4rem;
 }
 
 h3 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
 h4 {
-    font-size: 1rem;
     color: #4d4e53;
+    font-size: 1rem;
 }
 
 h5 {
@@ -76,8 +65,8 @@ header {
     }
 
     .class-description {
-        margin-top: 0.5rem;
         margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
 
         p {
             margin-top: 0;
@@ -86,10 +75,10 @@ header {
 }
 
 hr {
-    display: block;
-    height: 1px;
     border: 0;
     border-top: 1px solid #e1e4e5;
+    display: block;
+    height: 1px;
     margin: 24px 0;
     padding: 0;
 }
@@ -110,17 +99,17 @@ section {
 }
 
 table {
-    border-spacing: 0;
     border: 1px solid #efefef;
     border-collapse: collapse;
+    border-spacing: 0;
     font-size: 0.9rem;
 
     td, th {
+        display: table-cell;
         margin: 0;
+        padding: 5px 6px;
         text-align: left;
         vertical-align: top;
-        padding: 5px 6px;
-        display: table-cell;
     }
 
     thead tr {
@@ -134,26 +123,36 @@ table {
     }
 }
 
-.main-container {
-    margin-left: $navbar-width - 8px;
-    background: $page-color;
-    min-height: 100%;
 
+.content-container {
     .content {
-        padding: 1rem 3rem;
-        background: #fcfcfc;
-        min-height: 100%;
+        line-height: 1.6rem;
         max-width: 850px;
+        padding: 1rem 3rem;
 
         table {
             width: 100%;
         }
 
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: $spacer * 2;
+            margin-top: $spacer * 4;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: $spacer / 2;
+            margin-top: 0;
+        }
+
         // Breadcrumbs at the top of the page.
         .breadcrumbs {
             list-style: none;
-            padding: 0;
             margin: 0;
+            padding: 0;
             padding-bottom: 20px;
 
             li {
@@ -164,11 +163,13 @@ table {
 
         footer {
             display: block;
-            font-style: italic;
             font-size: 90%;
+            font-style: italic;
         }
     }
 }
+
+
 
 .class-description {
     font-size: 1rem;
@@ -187,17 +188,15 @@ table {
 }
 
 .signature-attributes {
-    font-size: 60%;
     color: #aaa;
+    font-size: 60%;
     font-style: italic;
     font-weight: lighter;
 }
 
 .ancestors {
-    color: #999;
-
     a {
-        color: #999;
+        color: $grey-color-lighter;
         text-decoration: none;
     }
 }
@@ -207,8 +206,8 @@ table {
 }
 
 .important {
-    font-weight: bold;
     color: #950b02;
+    font-weight: bold;
 }
 
 .yes-def {
@@ -221,14 +220,14 @@ table {
 
 
 .details {
-    margin-top: 14px;
     border-left: 1px solid #ddd;
+    margin-top: 14px;
 
     dt {
-        width: 120px;
         float: left;
         padding-left: 10px;
         padding-top: 6px;
+        width: 120px;
     }
 
     ul {
@@ -252,15 +251,16 @@ table {
 }
 
 .code-caption {
-    font-style: italic;
     font-size: 107%;
+    font-style: italic;
     margin: 0;
 }
 
 .params .name,
 .props .name,
 .name code {
-    color: #4d4e53;
+    // Parameters in a method table.
+    color: $accent-color;
     font-size: 100%;
 }
 
@@ -284,13 +284,14 @@ table {
 .subsection-title {
     font-size: 1rem;
     margin: 0;
+    margin-left: 24px;
     margin-top: 3rem;
 
     i {
-        position: absolute;
-        margin-left: -1.7rem;
-        margin-top: 0.1rem;
         font-size: 1.2rem;
+        margin-left: -24px;
+        margin-right: $spacer;
+        margin-top: 0.1rem;
     }
 }
 
@@ -309,24 +310,24 @@ table {
 // Used in the container template.
 dt {
     h4.name {
-        color: #fff;
         background: $accent-color;
-        box-shadow: 0 0.25em 0.5em #d3d3d3;
-        border-top: 1px solid #d3d3d3;
         border-bottom: 1px solid #d3d3d3;
-        padding: .75em 0 .75em 10px;
+        border-top: 1px solid #d3d3d3;
+        box-shadow: 0 0.25em 0.5em #d3d3d3;
+        color: #fff;
         margin-top: .5rem;
+        padding: .75em 0 .75em 10px;
 
         .async {
             vertical-align: bottom;
         }
 
         .source {
-            float: right;
-            padding-right: 0.5rem;
-            font-size: 1.2rem;
-            padding-top: 0.1rem;
             display: block;
+            float: right;
+            font-size: 1.2rem;
+            padding-right: 0.5rem;
+            padding-top: 0.1rem;
         }
 
         .type-signature {

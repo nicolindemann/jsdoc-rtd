@@ -1,375 +1,419 @@
 @import "search";
 
-nav {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: $navbar-width;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    min-height: 100%;
-    background: #343131;
-    z-index: 200;
+.navigation-sidebar-container {
+    height: 100vh;
+    min-width: 350px;
 
-    > * {
+    .navigation-sidebar {
+        background: #343131;
+        height: 100vh;
+        position: fixed;
+        width: 300px;
+        z-index: 200;
+
+        ul, ol, li {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        > * {
+            user-select: none;
+        }
+
+        .async {
+            color: $accent-color;
+            font-size: 0.8rem;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+
+        // Hides the scrollbar from the nav, but still allows scrolling the
+        // navbar with the wheel.
+        .nav-scroll-container {
+            // - 170px search and 88 px subject headers.
+            max-height: calc(100vh - 258px);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .nav-items {
+            margin: 0;
+            padding: 0;
+
+            .nav-item {
+                font-size: 0.85rem;
+
+                a {
+                    color: $grey-color-light;
+                    display: block;
+
+                    &:hover,
+                    &.selected {
+                        background: $white-color;
+                        color: $brand-color;
+                    }
+                }
+
+                .sub-nav-item {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        // The container for the nav-api and nav-manuals tabs.
+        .nav-doc-type {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            min-height: 88px;
+
+            .nav-doc-item {
+                background: $grey-color-lighter;
+                border-bottom: 1px solid $grey-color-light;
+                width: 100%;
+
+                &:hover {
+                    border-bottom: 1px solid lighten($grey-color-light, 10%);
+                    cursor: pointer;
+                }
+
+                a {
+                    color: $grey-color-dark;
+                    display: block;
+                    font-weight: 500;
+                    padding: ($spacer * 1.5) ($spacer * 2);
+                }
+
+                &.selected {
+                    background: $brand-color;
+                    border-bottom: 1px solid lighten($brand-color, 10%);
+
+                    a {
+                        color: $grey-color-lightest;
+
+                        &:hover {
+                            cursor: default;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // The api items container.
+        .nav-api {
+            h3 {
+                background: $grey-color-darker;
+                border-bottom: 1px solid lighten($grey-color-darker, 5%);
+                color: $grey-color-lighter;
+                display: block;
+                font-size: 0.8rem;
+                margin: 0;
+                padding: ($spacer * 1.5) ($spacer * 2);
+                text-transform: uppercase;
+            }
+
+            //The listed nav items, e.g. classes and modules.
+            .nav-item {
+                a,
+                a:visited,
+                a:active {
+                    line-height: $spacer * 2;
+                    padding: .3rem;
+                    padding-left: 1.5rem;
+                }
+
+                // Submenu is collapsed; not the selected one.
+                // Set the navigation menu item to semi-selected.
+                span.fa-minus  + a:not(.selected) {
+                    background: $grey-color-light;
+                    color: $grey-color-darker;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .nav-manuals {
+            h3 {
+                background: $grey-color-darker;
+                color: $grey-color-lighter;
+                display: block;
+                font-size: 0.8rem;
+                margin: 0;
+                padding: ($spacer * 1.5) ($spacer * 2);
+                text-transform: uppercase;
+            }
+
+            .nav-item {
+                font-size: 0.9rem;
+                font-weight: 500;
+
+                &.selected {
+                    background: $white-color;
+
+                    a {
+                        color: $brand-color;
+                    }
+
+                }
+
+                .toggle-subnav {display: none}
+
+                a {
+                    color: $grey-color-light;
+                    display: block;
+                    padding: ($spacer * 1.5) ($spacer * 2);
+                }
+            }
+        }
+
+
+
+        // Subitems in the navigation.
+        .nav-item-sub {
+            background: $grey-color-lighter;
+
+            .member-type {
+                color: $accent-color;
+                cursor: text;
+                font-size: 0.8rem;
+                font-weight: 500;
+                margin-left: 1.5rem;
+                padding: 0.2rem 0;
+            }
+
+            .inner {
+                li {
+                    border-bottom: 0;
+                    color: #bbb;
+                    margin: 0;
+                    padding-bottom: 0;
+                    padding-top: 0;
+                }
+
+                a {
+                    color: $grey-color-dark;
+                    padding-left: 1.8rem;
+
+                    &:hover {
+                        background: $grey-color-lightest;
+                    }
+                }
+            }
+        }
+
+
+        // The plus/minus sign next to each navigation item with children.
+        span.toggle-subnav {
+            font-size: 10px;
+            height: 24px;
+            left: 2px;
+            line-height: 24px;
+            position: absolute;
+            text-align: center;
+            width: 18px;
+
+            &:hover {
+                color: $grey-color-light;
+                cursor: hand;
+                outline: 0;
+            }
+        }
+    }
+
+
+
+    // Copied and modified from:
+    // https://github.com/clenemt/docdash/blob/master/static/styles/jsdoc.css
+    .navicon-button {
+        cursor: pointer;
+        display: none;
+        opacity: .8;
+        padding: 2 1.5rem;
+        position: relative;
+        transition: 0.25s;
         user-select: none;
     }
 
-    .async {
-        font-style: italic;
-        font-weight: bold;
-        font-size: 0.8rem;
-        color: $accent-color;
+    .navicon-button .navicon:before, .navicon-button .navicon:after {
+        transition: 0.25s;
+    }
+
+    .navicon-button:hover {
+        opacity: 1;
+        transition: 0.5s;
+    }
+
+    .navicon-button:hover .navicon:before, .navicon-button:hover .navicon:after {
+        transition: 0.25s;
+    }
+
+    .navicon-button:hover .navicon:before {
+        top: .825rem;
+    }
+
+    .navicon-button:hover .navicon:after {
+        top: -.825rem;
     }
 
 
-    // Hides the scrollbar from the nav, but still allows scrolling the
-    // navbar with the wheel.
-    .scroll {
-        width: $navbar-width + 20px;
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        height: calc(100% - 235px);
-    }
-
-    ul.nav-items {
-        line-height: 17px;
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-    }
-
-    // The tabs elements to navigate.
-    .nav-main {
-        text-align: center;
-        height: 50px;
-
-        .link {
-            color: $grey-color-light-1;
-        }
-    }
-
-    // The headers for the type item lists(modules/classes/...).
-    h3 {
-        line-height: 1.5rem;
-        color: #555;
-        margin: 0;
-        margin-top: 10px;
-        margin-left: 0.5rem;
-        text-transform: uppercase;
-    }
-
-    // The container for the nav-api and nav-manuals tabs.
-    .nav-tab {
-        text-align: center;
-        margin: 0;
-        height: 40px;
-
-        li {
-            display: inline-block;
-            padding: 0.5rem;
-
-            &.selected {
-                a h4 {
-                    color: $grey-color-light-1;
-                }
-            }
-        }
-    }
-
-
-    // The api items container.
-    .nav-api {
-        h3 {
-            font-size: 0.85rem;
-            margin: .5rem 0.4rem;
-        }
-    }
-
-    //The listed nav items, e.g. classes and modules.
-    .nav-item {
-        a,
-        a:visited,
-        a:active {
-            font-size: 0.9rem;
-            line-height: 18px;
-            padding: .2rem;
-            padding-left: 1.5rem;
-            color: #b3b3b3;
-            display: block;
-        }
-
-        // A selected main navigation item.
-        a.selected,
-        a.selected:hover {
-            background: $page-color;
-            color: $grey-color-dark-1;
-            font-weight: bold;
-        }
-
-        a:hover {
-            background: $grey-color-dark-2;
-        }
-
-        // Submenu is collapsed; not the selected one.
-        // Set the navigation menu item to semi-selected.
-        span.fa-minus  + a:not(.selected) {
-            background: $grey-color-light-1;
-            color: $grey-color-dark-1;
-            font-weight: bold;
-        }
-    }
-
-    // Subitems in the navigation.
-    .nav-item-sub {
-        background: $grey-color-light-2;
-
-        .member-type {
-            padding: 0.2rem 0;
-            font-size: 0.9rem;
-            margin-left: 1.5rem;
-            color: $accent-color;
-            font-weight: normal;
-            cursor: text;
-        }
-
-        .inner {
-            li {
-                margin: 0;
-                border-bottom: 0;
-                padding-top: 0;
-                padding-bottom: 0;
-                color: #bbb;
-            }
-
-            a {
-                padding-left: 1.8rem;
-                color: $grey-color-dark-2;
-
-                &:hover {
-                    background: $grey-color-light-1;
-                }
-            }
-        }
-    }
-
-
-    // The plus/minus sign next to each navigation item with children.
-    span.toggle-subnav {
-        font-size: 10px;
-        position: absolute;
-        width: 18px;
-        height: 24px;
-        line-height: 24px;
-        text-align: center;
-        left: 2px;
-
-        &:hover {
-            outline: 0;
-            color: $grey-color-light-1;
-            cursor: hand;
-        }
-    }
-
-    .version {
-        color: #aaa;
-    }
-}
-
-
-
-
-// Copied and modified from:
-// https://github.com/clenemt/docdash/blob/master/static/styles/jsdoc.css
-.navicon-button {
-    display: none;
-    position: relative;
-    padding: 2 1.5rem;
-    transition: 0.25s;
-    cursor: pointer;
-    user-select: none;
-    opacity: .8;
-}
-
-.navicon-button .navicon:before, .navicon-button .navicon:after {
-    transition: 0.25s;
-}
-
-.navicon-button:hover {
-    transition: 0.5s;
-    opacity: 1;
-}
-
-.navicon-button:hover .navicon:before, .navicon-button:hover .navicon:after {
-    transition: 0.25s;
-}
-
-.navicon-button:hover .navicon:before {
-    top: .825rem;
-}
-
-.navicon-button:hover .navicon:after {
-    top: -.825rem;
-}
-
-
-.navicon {
-    position: relative;
-    width: 2.5em;
-    height: .3125rem;
-    background: $accent-color;
-    transition: 0.3s;
-    border-radius: 2.5rem;
-    box-shadow: 1px 1px 2px #000;
-
-    &:before,
-    &:after {
-        display: block;
-        content: "";
-        height: .3125rem;
-        width: 2.5rem;
+    .navicon {
         background: $accent-color;
-        position: absolute;
-        z-index: -1;
-        transition: 0.3s 0.25s;
-        border-radius: 1rem;
+        border-radius: 2.5rem;
         box-shadow: 1px 1px 2px #000;
+        height: .3125rem;
+        position: relative;
+        transition: 0.3s;
+        width: 2.5em;
+
+        &:before,
+        &:after {
+            background: $accent-color;
+            border-radius: 1rem;
+            box-shadow: 1px 1px 2px #000;
+            content: "";
+            display: block;
+            height: .3125rem;
+            position: absolute;
+            transition: 0.3s 0.25s;
+            width: 2.5rem;
+            z-index: -1;
+        }
+
+        &:before {
+            top: .625rem;
+        }
+
+        &:after {
+            top: -.625rem;
+        }
+
     }
 
-    &:before {
-        top: .625rem;
+
+    // Open.
+    .nav-trigger:checked + label:not(.steps) .navicon:before,
+    .nav-trigger:checked + label:not(.steps) .navicon:after {
+        top: 0;
     }
 
-    &:after {
-        top: -.625rem;
+    .nav-trigger:checked + label .navicon:before,
+    .nav-trigger:checked + label .navicon:after {
+        transition: 0.5s;
     }
 
-}
+    // Minus.
+    .nav-trigger:checked + label {
+        transform: scale(0.75);
+    }
 
+    // × and +.
+    .nav-trigger:checked + label.plus .navicon,
+    .nav-trigger:checked + label.x .navicon {
+        background: transparent;
+        box-shadow: none;
+    }
 
-// Open.
-.nav-trigger:checked + label:not(.steps) .navicon:before,
-.nav-trigger:checked + label:not(.steps) .navicon:after {
-    top: 0;
-}
+    .nav-trigger:checked + label.plus .navicon:before,
+    .nav-trigger:checked + label.x .navicon:before {
+        background: #fff;
+        transform: rotate(-45deg);
+    }
 
-.nav-trigger:checked + label .navicon:before,
-.nav-trigger:checked + label .navicon:after {
-    transition: 0.5s;
-}
+    .nav-trigger:checked + label.plus .navicon:after,
+    .nav-trigger:checked + label.x .navicon:after {
+        -webkit-transform: rotate(45deg);
+        background: #fff;
+        transform: rotate(45deg);
+    }
 
-// Minus.
-.nav-trigger:checked + label {
-    transform: scale(0.75);
-}
+    .nav-trigger:checked + label.plus {
+        transform: scale(0.75) rotate(45deg);
+    }
 
-// × and +.
-.nav-trigger:checked + label.plus .navicon,
-.nav-trigger:checked + label.x .navicon {
-    background: transparent;
-    box-shadow: none;
-}
+    .nav-trigger:checked ~ nav {
+        left: 0;
+    }
 
-.nav-trigger:checked + label.plus .navicon:before,
-.nav-trigger:checked + label.x .navicon:before {
-    transform: rotate(-45deg);
-    background: #fff;
-}
+    .nav-trigger:checked ~ .overlay {
+        display: block;
+    }
 
-.nav-trigger:checked + label.plus .navicon:after,
-.nav-trigger:checked + label.x .navicon:after {
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    background: #fff;
-}
+    .nav-trigger {
+        clip: rect(0, 0, 0, 0);
+        position: fixed;
+        top: 0;
+    }
 
-.nav-trigger:checked + label.plus {
-    transform: scale(0.75) rotate(45deg);
-}
+    // The overlay behind the navigation when the mobile navigation is active.
+    .overlay {
+        background: hsla(0, 0%, 0%, 0.5);
+        bottom: 0;
+        display: none;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
 
-.nav-trigger:checked ~ nav {
-    left: 0;
-}
+    @media only screen and (min-width: 320px) and (max-width: 680px) {
+        body {
+            overflow-x: hidden;
 
-.nav-trigger:checked ~ .overlay {
-    display: block;
-}
+            // Expand the content area and undo the major margin-left.
+            .main-container {
+                margin-left: 0;
 
-.nav-trigger {
-    position: fixed;
-    top: 0;
-    clip: rect(0, 0, 0, 0);
-}
-
-// The overlay behind the navigation when the mobile navigation is active.
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: hsla(0, 0%, 0%, 0.5);
-    z-index: 1;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 680px) {
-    body {
-        overflow-x: hidden;
-
-        // Expand the content area and undo the major margin-left.
-        .main-container {
-            margin-left: 0;
-
-            .content {
-                width: 100%;
-                margin: 0;
-                padding: 0.5rem;
+                .content {
+                    margin: 0;
+                    padding: 0.5rem;
+                    width: 100%;
+                }
             }
         }
-    }
 
-    nav {
-        width: calc(100% - 100px);
-        left: calc(-100% - 100px);
-        z-index: 3;
-        transition: left 0.2s;
+        nav {
+            left: calc(-100% - 100px);
+            transition: left 0.2s;
+            width: calc(100% - 100px);
+            z-index: 3;
 
-        .scroll {
-            width: calc(100% + 20px);
-            position: relative;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            height: calc(100% - 235px);
+            .nav-scroll-container {
+                overflow-x: hidden;
+                overflow-y: scroll;
+                position: relative;
+                // Give some room to extend the collapsable menus to the top.
+            }
+        }
+
+
+        .navicon-button {
+            display: inline-block;
+            position: fixed;
+            right: 0;
+            top: 1.5em;
+            z-index: 2;
+        }
+
+
+        footer {
+            margin-left: 0;
         }
     }
 
-
-    .navicon-button {
-        display: inline-block;
-        position: fixed;
-        top: 1.5em;
-        right: 0;
-        z-index: 2;
-    }
-
-
-    footer {
-        margin-left: 0;
-    }
-}
-
-@media only screen and (min-width: 680px) {
-    body {
-        .main-container {
-            // Make sure the overlay hides, when the navigation is triggered
-            // and we switch back to regular wide-screen style.
-            .nav-trigger:checked ~ .overlay  {
-                display: none;
+    @media only screen and (min-width: 680px) {
+        body {
+            .main-container {
+                // Make sure the overlay hides, when the navigation is triggered
+                // and we switch back to regular wide-screen style.
+                .nav-trigger:checked ~ .overlay  {
+                    display: none;
+                }
             }
         }
     }

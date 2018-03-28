@@ -1,21 +1,22 @@
+$font-path: "../fonts";
+
 @font-face {
-    font-family: "Roboto Slab";
-    src: url("../fonts/RobotoSlab-Regular.ttf");
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    src: local("Roboto Light"), local("Roboto-Light"), url("#{$font-path}/Roboto-Light.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: "Roboto Slab";
-    src: url("../fonts/RobotoSlab-Bold.ttf");
-    font-weight: bold;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Roboto"), local("Roboto-Regular"), url("#{$font-path}/Roboto-Regular.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: "Lato";
-    src: url("../fonts/Lato-Regular.ttf");
-}
-
-@font-face {
-    font-family: "Lato";
-    src: url("../fonts/Lato-Bold.ttf");
-    font-weight: bold;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    src: local("Roboto Medium"), local("Roboto-Medium"), url("#{$font-path}/Roboto-Medium.woff2") format("woff2");
 }

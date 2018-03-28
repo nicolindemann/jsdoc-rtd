@@ -10,7 +10,7 @@
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "build-js": "browserify js/rtd.js > static/js/rtd.js",
     "watch-js": "watchify js/rtd.js -o static/js/rtd.js -dv",
-    "assets": "cp -R node_modules/font-awesome/fonts/* static/fonts/;cp node_modules/font-awesome/css/font-awesome.min.css static/styles/",
+    "assets": "cp -R node_modules/font-awesome/fonts/* static/fonts/;cp node_modules/font-awesome/css/font-awesome.min.css static/styles/;cp node_modules/roboto-fontface/fonts/roboto/{Roboto-Light.woff2,Roboto-Regular.woff2,Roboto-Medium.woff2} static/fonts",
     "prepublish": "npm run assets;npm run build-css;npm run build-js;"
   },
   "repository": {
@@ -38,12 +38,14 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "font-awesome": "^4.7.0",
+    "roboto-fontface": "^0.9.0",
     "sanitize-html": "^1.14.1",
     "taffydb": "^2.7.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
     "del": "^2.2.2",
+    "eslint-plugin-sort-class-members": "^1.3.0",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
     "gulp-jsdoc3": "^1.0.1",

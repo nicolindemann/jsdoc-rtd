@@ -10,34 +10,32 @@ class RTD {
         this.$.main = $('#main')
         this.$.nav = $('nav')
         this.$.resizer = $('#resizer')
-        this.$.scroll = $('.scroll')
+        this.$.scroll = $('.nav-scroll-container')
 
         this.$.apiTab = $('#api-tab')
         this.$.manualsTab = $('#manuals-tab')
 
         // Determine which category tab must be active.
-        if (location.hash === '#api') {
-            this.showApiTab()
-        } else if (location.hash === '#manuals' || isManual) {
+        if (window.isManual || (!location.pathname.includes('.html') && !location.hash.includes('#api'))) {
             this.showManualsTab()
         } else {
             this.showApiTab()
         }
 
-
         // Targets the current page in the navigation.
-        if (isApi) {
-            let longnameSelector = doc.longname.replace(/[~|:|.]/g, '_')
+        if (window.isApi) {
+            let longnameSelector = window.doc.longname.replace(/[~|:|.]/g, '_')
             this.$.selectedApiSubItem = $(`#${longnameSelector}_sub`)
             this.$.selectedApiSubItem.removeClass('hidden')
             let selectedApiItem = this.$.selectedApiSubItem.prev()
             selectedApiItem.addClass('selected')
             // Try to position selectedApiItem at the top of the scroll container.
             let navScrollTop = this.$.scroll.get(0)
-            if (navScrollTop) navScrollTop.getBoundingClientRect().top
+            if (navScrollTop) navScrollTop = navScrollTop.getBoundingClientRect().top
             let navItemTop = selectedApiItem.get(0)
-            if (navItemTop) navItemTop.getBoundingClientRect().top
-            this.$.scroll.scrollTop(navItemTop - navScrollTop)
+            if (navItemTop) navItemTop = navItemTop.getBoundingClientRect().top
+
+            this.$.scroll.scrollTop(navItemTop - navScrollTop + 1)
             // Height of the item from the top of the scroll container.
             this.$.selectedApiSubItem.parent().find('.fa').removeClass('fa-plus').addClass('fa-minus')
         }
@@ -88,6 +86,7 @@ class RTD {
         window.addEventListener('hashchange', this.selectHref.bind(this), false)
     }
 
+
     /**
      * The manual tab.
      */
@@ -97,6 +96,7 @@ class RTD {
         $('.nav-api').addClass('hidden')
         $('.nav-manuals').removeClass('hidden')
     }
+
 
     /**
      * The API tab.
@@ -113,9 +113,20 @@ class RTD {
      * Add a selected class to a link with a matching href.
      */
     selectHref() {
+        // Remove selected from all
         $('.sub-nav-item a').removeClass('selected')
-        let item = document.querySelector(`a[href$="${location.pathname.substr(1)}${location.hash}"]`)
-        $(item).addClass('selected')
+        let hrefMatch = location.pathname.split('/').pop()
+        if (hrefMatch.includes('tutorial')) {
+            hrefMatch = `.nav-item.${hrefMatch.replace('.html', '').split('-').pop()}`
+        } else if (hrefMatch !== '') {
+            hrefMatch = `a[href="${hrefMatch}${location.hash}"]`
+        }
+
+        if (hrefMatch) {
+            const node = document.querySelector(hrefMatch)
+            if (node) node.classList.add('selected')
+        }
+
     }
 }
 
