@@ -374,7 +374,7 @@ function buildSubNav(obj) {
         memberof: longname,
     })
 
-    let html = `<div class="nav-item-sub hidden" id="${obj.longname.replace(/[~|:|.]/g, '_')}_sub">`
+    let html = `<div class="nav-item-sub hidden" id="${obj.longname.replace(/[~|:|.|@]/g, '_')}_sub">`
 
     html += buildSubNavMembers(members, 'Members')
     html += buildSubNavMembers(methods, 'Methods')
