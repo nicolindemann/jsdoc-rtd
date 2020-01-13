@@ -41,16 +41,6 @@ nav {
         list-style-type: none;
     }
 
-    // The tabs elements to navigate.
-    .nav-main {
-        text-align: center;
-        height: 50px;
-
-        .link {
-            color: $grey-color-light-1;
-        }
-    }
-
     // The headers for the type item lists(modules/classes/...).
     h3 {
         line-height: 1.5rem;
@@ -174,7 +164,7 @@ nav {
     }
 
     .version {
-        color: #aaa;
+        color: rgba(255,255,255,0.3);
     }
 }
 
