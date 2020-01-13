@@ -75,6 +75,8 @@
         padding-left: 1rem; }
       .nav-search ul.searched-list li span.group {
         float: right; }
+  .nav-search .link {
+    color: #eee; }
 
 nav {
   position: fixed;
@@ -105,11 +107,6 @@ nav {
     padding: 0;
     margin: 0;
     list-style-type: none; }
-  nav .nav-main {
-    text-align: center;
-    height: 50px; }
-    nav .nav-main .link {
-      color: #d6d6d6; }
   nav h3 {
     line-height: 1.5rem;
     color: #555;
@@ -182,7 +179,7 @@ nav {
       color: #d6d6d6;
       cursor: hand; }
   nav .version {
-    color: #aaa; }
+    color: rgba(255, 255, 255, 0.3); }
 
 .navicon-button {
   display: none;
