@@ -335,11 +335,54 @@ function buildSubNavMembers(list, type) {
         html += `<div class="member-type">${type}</div>`
         html += '<ul class="inner">'
         list.forEach(function(item) {
-            html += `<li class="sub-nav-item">${linkto(item.longname, item.name, null, null, true)}`
+
+            let methods = find({
+                kind: 'function',
+                memberof: item.longname,
+            })
+
+            let members = find({
+                kind: 'member',
+                memberof: item.longname,
+            })
+        
+            let events = find({
+                kind: 'event',
+                memberof: item.longname,
+            })
+        
+            let typedef = find({
+                kind: 'typedef',
+                memberof: item.longname,
+            })
+
+            html += `<li class="sub-nav-item">`
+            const hasItems = [].concat(methods, members, events, typedef).length
+            if (hasItems) {
+                html += `<span class="toggle-subnav invisible btn btn-link fa fa-plus"></span>`
+            }
+            html += `${linkto(item.longname, item.name, null, null, true)}`
+
             if (item.meta.code.node && item.meta.code.node.async) {
                 html += ' <span class="async"> async</span>'
             }
-            html += '</a></li>'
+
+            html += '</a>'
+        
+          
+            if (hasItems) {
+                html += `<div class="nav-item-sub hidden" id="${item.longname.replace(/[~|:|.|@]/g, '_')}_sub">`
+                html += '<ul class="inner" style="margin-left: 1em">'
+                html += buildSubNavMembers(methods, 'Methods') 
+                html += buildSubNavMembers(members, 'Members') 
+                html += buildSubNavMembers(events, 'Events') 
+                html += buildSubNavMembers(typedef, 'Typedef') 
+                html += '</ul>'
+                html += '</div>'
+            }
+            logger.info(methods)
+            html += '</li>'
+
         })
         html += '</ul>'
     }
@@ -354,12 +397,19 @@ function buildSubNavMembers(list, type) {
  * -- 'Namespaces'
  * @param obj
  */
-function buildSubNav(obj) {
+function buildSubNav(obj, level) {
     let longname = obj.longname
+
+    let classes = find({
+        kind: 'class',
+        memberof: longname,
+    })
+
     let members = find({
         kind: 'member',
         memberof: longname,
     })
+
     let methods = find({
         kind: 'function',
         memberof: longname,
@@ -369,17 +419,30 @@ function buildSubNav(obj) {
         kind: 'event',
         memberof: longname,
     })
+
     let typedef = find({
         kind: 'typedef',
         memberof: longname,
     })
 
-    let html = `<div class="nav-item-sub hidden" id="${obj.longname.replace(/[~|:|.|@]/g, '_')}_sub">`
+    let interfaces = find({
+        kind: 'interface',
+        memberof: longname,
+    })
 
+    let html = `<div class="nav-item-sub hidden" id="${obj.longname.replace(/[~|:|.|@]/g, '_')}_sub">`
+    if (level === true) {
+        html += '<ul class="inner" style="margin-left: 1em">'
+    }
+    html += buildSubNavMembers(classes, 'Classes')
     html += buildSubNavMembers(members, 'Members')
     html += buildSubNavMembers(methods, 'Methods')
     html += buildSubNavMembers(events, 'Events')
     html += buildSubNavMembers(typedef, 'Typedef')
+    html += buildSubNavMembers(interfaces, 'Interfaces')
+    if (level === true) {
+        html += '</ul>'
+    }
     html += '</div>'
 
     return html
@@ -412,6 +475,8 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, uniqueId) {
             // Skip building an item with the same id more than once. Used
             // When rendering navigatiohn for modules.
             if (uniqueId && seen[item.id]) return
+            // Skip if item is member of some module
+            if ((item.kind === 'class' || item.kind === 'interface') && item.memberof) return
             if (!hasOwnProp.call(item, 'longname')) {
                 itemsNav += `<li>${linktoFn('', item.name)}${buildSubNav(item)}</li>`
             } else if (!hasOwnProp.call(itemsSeen, item.longname)) {

@@ -126,6 +126,19 @@ class RTD {
                 })
         })
 
+        this.$.nav.find('.member-type').each(function() {
+            $(this).find('.toggle-subnav')
+                .filter(function() {
+                    // Keeps subnavs without items invisible.
+                    return $(this).next().next(':empty').length === 0;
+                }).each(function() {
+                    $(this).removeClass('invisible').on('click', function(e) {
+                        $(e.currentTarget).next().next().toggleClass('hidden')
+                        $(e.currentTarget).toggleClass('fa-plus fa-minus')
+                    })
+                })
+        })
+
         function resize(event) {
             var clientX = event.clientX
             clientX = Math.max(200, clientX)
